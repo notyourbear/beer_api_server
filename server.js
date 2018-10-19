@@ -2,9 +2,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 
+const dbConnect = require("./db");
 const apiRouter = require("./api");
 
 const environment = process.env.NODE_ENV; // development
+
+dbConnect();
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));

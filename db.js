@@ -5,8 +5,6 @@ mongoose.Promise = global.Promise;
 module.exports = (config = appConfig) => {
   return mongoose.connect(
     config.db.url,
-    {
-      useMongoClient: true
-    }
+    { useNewUrlParser: true }
   );
 };
