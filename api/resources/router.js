@@ -1,8 +1,8 @@
 const express = require("express");
-// const userRouter = require("./resources/user");
-// const beerRouter = require("./resources/beer");
-// const locationRouter = require("./resources/location");
-// const breweryRouter = require("./resources/brewery");
+// const userRouter = require("./user");
+// const beerRouter = require("./beer");
+// const locationRouter = require("./location");
+// const breweryRouter = require("./brewery");
 
 let router = express.Router();
 // router.use("/user", userRouter);

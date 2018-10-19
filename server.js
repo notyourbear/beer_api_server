@@ -1,6 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const logger = require("morgan");
+
 const apiRouter = require("./api");
+
+const environment = process.env.NODE_ENV; // development
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -14,6 +18,11 @@ app.use(function(req, res, next) {
   next();
 });
 
+if (environment !== "production") {
+  app.use(logger("dev"));
+}
+
+// router
 app.use("/api", apiRouter);
 
 // catch all
