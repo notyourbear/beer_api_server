@@ -13,9 +13,9 @@ function getAll(req, res, next) {
 }
 
 function createOne(req, res, next) {
-  let beer = req.body.beer;
+  let beer = req.body.data;
   beerModel
-    .create(user)
+    .create(beer)
     .then(createdBeer => {
       res.status(201).json(createdBeer);
     })

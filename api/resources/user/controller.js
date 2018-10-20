@@ -24,7 +24,7 @@ function getOne(req, res, next) {
 function updateOne() {}
 
 function createOne(req, res, next) {
-  let user = req.body.user;
+  let user = req.body.data;
   userModel
     .create(user)
     .then(createdUser => {
