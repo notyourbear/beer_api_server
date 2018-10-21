@@ -11,7 +11,10 @@ module.exports = {
 };
 
 function getAll(req, res, next) {
-  let query = drinkModel.find({}).lean();
+  let query = drinkModel
+    .find({})
+    .populate("user beer location")
+    .lean();
   Promise.resolve(query.exec())
     .then(drinks => res.status(200).json(drinks))
     .catch(err => next(err));
@@ -21,7 +24,7 @@ function findByUser(req, res, next) {
   let { user } = req.params;
   let query = drinkModel
     .find({ user })
-    .populate("beer", "location")
+    .populate("user beer location")
     .lean();
   return query.exec().then(doc => {
     if (!doc) {
@@ -57,9 +60,9 @@ function createOne(req, res, next) {
   resolved
     .then(() =>
       drinkModel.create({
-        user: user,
-        beer: beer,
-        location: location
+        user: user._id,
+        beer: beer._id,
+        location: location._id
       })
     )
     .then(createdDrink => {
