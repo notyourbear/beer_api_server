@@ -10,9 +10,6 @@ drinkRouter
   .get(drinkController.getAll)
   .post(drinkController.createOne);
 
-drinkRouter
-  .route("/:user")
-  .get(drinkController.getOne)
-  .put(drinkController.updateOne);
+drinkRouter.route("/:user").get(drinkController.getByUser);
 
 module.exports = drinkRouter;

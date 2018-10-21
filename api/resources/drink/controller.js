@@ -1,7 +1,7 @@
 const drinkModel = require("./model");
 
-const locationController = require("../location/controller");
-const beerController = require("./beer/controller");
+const locationModel = require("../location/model");
+const beerModel = require("../beer/model");
 
 module.exports = {
   getAll,
@@ -19,7 +19,10 @@ function getAll(req, res, next) {
 
 function findByUser(req, res, next) {
   let { user } = req.params;
-  let query = drinkModel.find({ user }).lean();
+  let query = drinkModel
+    .find({ user })
+    .populate("beer", "location")
+    .lean();
   return query.exec().then(doc => {
     if (!doc) {
       return next(new Error(`no user model found with id: ${user}`));
@@ -40,26 +43,23 @@ function createOne(req, res, next) {
   let { beer, location, user } = req.body.data;
   let promises = [];
 
-  if (!beer.id)
+  if (!beer._id)
+    promises.push(beerModel.create(beer).then(created => (beer = created)));
+  if (!location._id)
     promises.push(
-      beerController.createOne(beer).then(created => (beer = created))
-    );
-  if (!location.id)
-    promises.push(
-      locationController
-        .createOne(location)
-        .then(created => (location = created))
+      locationModel.create(location).then(created => (location = created))
     );
 
   let resolved = promises.length
     ? Promise.all(promises)
     : Promise.resolve(true);
+
   resolved
     .then(() =>
       drinkModel.create({
-        user,
-        beer: beer.id,
-        locationBeer: location.id
+        user: user,
+        beer: beer,
+        location: location
       })
     )
     .then(createdDrink => {
