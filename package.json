@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "NODE_ENV=development nodemon index.js"
+    "dev": "NODE_ENV=development nodemon index.js",
+    "test-prod": "NODE_ENV=testproduction nodemon index.js"
   },
   "author": "Patrick Racenberg",
   "license": "ISC",

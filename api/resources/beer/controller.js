@@ -6,7 +6,7 @@ module.exports = {
 };
 
 function getAll(req, res, next) {
-  let query = userModel.find({}).lean();
+  let query = beerModel.find({}).lean();
   Promise.resolve(query.exec())
     .then(users => res.status(200).json(users))
     .catch(err => next(err));
