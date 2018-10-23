@@ -16,5 +16,8 @@ module.exports = {
   PORT: process.env.PORT,
   db: {
     url: dbURL
+  },
+  secrets: {
+    JWT_SECRET: process.env.JWT_SECRET
   }
 };

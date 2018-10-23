@@ -4,18 +4,20 @@
   "description": "backend for beer stats queries",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=testing npm run test:unit",
     "dev": "NODE_ENV=development nodemon index.js",
     "test-prod": "NODE_ENV=testproduction nodemon index.js",
-    "test:unit": "mocha \"api/**/test.js\" --timeout 10000",
-    "test": "NODE_ENV=testing npm run test:unit"
+    "test:unit": "mocha \"api/**/test.js\" --timeout 10000"
   },
   "author": "Patrick Racenberg",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
+    "express-jwt": "^5.3.1",
+    "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.3.4"
   },
   "devDependencies": {
