@@ -5,7 +5,6 @@ const app = require("./server");
 const config = require("./config");
 
 const server = http.createServer(app);
+const port = process.env.PORT || config.PORT;
 
-server.listen(process.env.PORT || config.DEFAULT_PORT, () => {
-  console.log("Server listening on port 4200");
-});
+server.listen(port, () => console.log(`Server listening on port ${port}`));

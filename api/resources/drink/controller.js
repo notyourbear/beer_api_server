@@ -46,12 +46,34 @@ function createOne(req, res, next) {
   let { beer, location, user } = req.body.data;
   let promises = [];
 
-  if (!beer._id)
-    promises.push(beerModel.create(beer).then(created => (beer = created)));
-  if (!location._id)
+  if (!beer._id) {
     promises.push(
-      locationModel.create(location).then(created => (location = created))
+      beerModel
+        .findOne({ name: beer.name })
+        .lean()
+        .exec()
+        .then(foundBeer => {
+          return foundBeer
+            ? (beer = foundBeer)
+            : beerModel.create(beer).then(created => (beer = created));
+        })
     );
+  }
+  if (!location._id) {
+    promises.push(
+      locationModel
+        .findOne({ name: location.name })
+        .lean()
+        .exec()
+        .then(foundLocation => {
+          return foundLocation
+            ? (location = foundLocation)
+            : locationModel
+                .create(location)
+                .then(created => (location = created));
+        })
+    );
+  }
 
   let resolved = promises.length
     ? Promise.all(promises)

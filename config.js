@@ -1,9 +1,20 @@
+require("dotenv").config();
+
+let dbURL;
+switch (process.env.NODE_ENV) {
+  case "testproduction":
+    dbURL = process.env.PROD_DB_URL;
+    break;
+  case "testing":
+    dbURL = process.env.TEST_DB_URL;
+    break;
+  default:
+    dbURL = process.env.DB_URL;
+}
+
 module.exports = {
-  DEFAULT_PORT: process.env.DEFAULT_PORT,
+  PORT: process.env.PORT,
   db: {
-    url:
-      process.env.NODE_ENV === "testproduction"
-        ? process.env.PROD_DB_URL
-        : process.env.DB_URL
+    url: dbURL
   }
 };

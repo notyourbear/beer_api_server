@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development nodemon index.js",
-    "test-prod": "NODE_ENV=testproduction nodemon index.js"
+    "test-prod": "NODE_ENV=testproduction nodemon index.js",
+    "test:unit": "mocha \"api/**/test.js\" --timeout 10000",
+    "test": "NODE_ENV=testing npm run test:unit"
   },
   "author": "Patrick Racenberg",
   "license": "ISC",
@@ -17,6 +19,9 @@
     "mongoose": "^5.3.4"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
+    "mocha": "^5.2.0",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.4"
   }
