@@ -4,7 +4,6 @@ module.exports = {
   getAll,
   createOne,
   getOne,
-  updateOne,
   findByName
 };
 
@@ -16,12 +15,10 @@ function getAll(req, res, next) {
 }
 
 function getOne(req, res, next) {
-  Promise.resolve(req.userFromId)
+  Promise.resolve(req.userFromName)
     .then(user => res.status(200).json(user))
     .catch(err => next(err));
 }
-
-function updateOne() {}
 
 function createOne(req, res, next) {
   let user = req.body.data;
@@ -42,7 +39,7 @@ function findByName(req, res, next) {
       if (!doc) {
         return next(new Error(`no user model found with name: ${name}`));
       }
-      req.userFromId = doc;
+      req.userFromName = doc;
       return next();
     })
     .catch(err => next(err));

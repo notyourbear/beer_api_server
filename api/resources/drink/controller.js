@@ -2,6 +2,7 @@ const drinkModel = require("./model");
 
 const locationModel = require("../location/model");
 const beerModel = require("../beer/model");
+const userModel = require("../user/model");
 
 module.exports = {
   getAll,
@@ -46,6 +47,15 @@ function createOne(req, res, next) {
   let { beer, location, user } = req.body.data;
   let promises = [];
 
+  if (!user._id) {
+    promises.push(
+      userModel
+        .findOne({ name: user.name })
+        .lean()
+        .exec()
+        .then(foundUser => (user = foundUser))
+    );
+  }
   if (!beer._id) {
     promises.push(
       beerModel

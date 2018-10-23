@@ -10,9 +10,6 @@ userRouter
   .get(userController.getAll)
   .post(userController.createOne);
 
-userRouter
-  .route("/:name")
-  .get(userController.getOne)
-  .put(userController.updateOne);
+userRouter.route("/:name").get(userController.getOne);
 
 module.exports = userRouter;
