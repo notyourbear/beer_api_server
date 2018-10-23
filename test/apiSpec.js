@@ -19,15 +19,6 @@ const createApiSpec = (model, resourceName, newResource) => {
       await helpers.dropDb();
     });
 
-    describe(`GET /${resourceName}`, () => {
-      it(`should get all ${resourceName}s`, async () => {
-        const result = await chai.request(app).get(`/api/${resourceName}`);
-
-        expect(result).to.have.status(200);
-        expect(result).to.be.json;
-      });
-    });
-
     describe(`POST /${resourceName}`, () => {
       it(`should create a ${resourceName}`, async () => {
         const result = await chai
@@ -36,6 +27,14 @@ const createApiSpec = (model, resourceName, newResource) => {
           .send(newResource);
 
         expect(result).to.have.status(201);
+        expect(result).to.be.json;
+      });
+    });
+
+    describe(`GET /${resourceName}`, () => {
+      it(`should get all ${resourceName}s`, async () => {
+        const result = await chai.request(app).get(`/api/${resourceName}`);
+        expect(result).to.have.status(200);
         expect(result).to.be.json;
       });
     });
