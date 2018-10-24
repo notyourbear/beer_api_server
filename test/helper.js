@@ -5,6 +5,7 @@ const userModel = require("../api/resources/user/model");
 const locationModel = require("../api/resources/location/model");
 const drinkModel = require("../api/resources/drink/model");
 const beerModel = require("../api/resources/beer/model");
+const adminModel = require("../api/resources/admin/model");
 
 mongoose.Promise = global.Promise;
 
@@ -36,6 +37,9 @@ function removeModel(modelName) {
       break;
     case "drink":
       model = drinkModel;
+      break;
+    case "admin":
+      model = adminModel;
       break;
   }
 

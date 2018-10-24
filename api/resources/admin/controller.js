@@ -1,45 +1,47 @@
-const userModel = require("./model");
+const adminModel = require("./model");
 
 module.exports = {
   getAll,
   createOne,
   getOne,
-  findByName
+  findByUsername
 };
 
 function getAll(req, res, next) {
-  let query = userModel.find({}).lean();
+  let query = adminModel.find({}).lean();
   Promise.resolve(query.exec())
-    .then(users => res.status(200).json(users))
+    .then(admins => res.status(200).json(admins))
     .catch(err => next(err));
 }
 
 function getOne(req, res, next) {
-  Promise.resolve(req.userFromName)
-    .then(user => res.status(200).json(user))
+  Promise.resolve(req.adminFromUsername)
+    .then(admin => res.status(200).json(admin))
     .catch(err => next(err));
 }
 
 function createOne(req, res, next) {
-  let user = req.body.data;
-  userModel
-    .create(user)
-    .then(createdUser => {
-      res.status(201).json(createdUser);
+  let admin = req.body.data;
+  adminModel
+    .create(admin)
+    .then(createdAdmin => {
+      res.status(201).json(createdAdmin);
     })
     .catch(err => next(err));
 }
 
-function findByName(req, res, next) {
-  let { name } = req.params;
-  let query = userModel.findOne({ name }).lean();
+function findByUsername(req, res, next) {
+  let { username } = req.params;
+  let query = adminModel.findOne({ username }).lean();
   return query
     .exec()
     .then(doc => {
       if (!doc) {
-        return next(new Error(`no user model found with name: ${name}`));
+        return next(
+          new Error(`no admin model found with username: ${username}`)
+        );
       }
-      req.userFromName = doc;
+      req.adminFromUsername = doc;
       return next();
     })
     .catch(err => next(err));

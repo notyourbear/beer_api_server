@@ -4,6 +4,7 @@ const logger = require("morgan");
 
 const dbConnect = require("./db");
 const apiRouter = require("./api");
+const auth = require("./api/modules/auth");
 
 const environment = process.env.NODE_ENV; // development
 
@@ -26,7 +27,8 @@ if (environment !== "production") {
 }
 
 // router
-app.use("/api", apiRouter);
+app.use("/signin", auth.signin);
+app.use("/api", auth.protect, apiRouter);
 
 // catch all
 app.all("*", (req, res) => {

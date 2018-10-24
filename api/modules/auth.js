@@ -3,7 +3,10 @@ const jwt = require("jsonwebtoken");
 const expressJwt = require("express-jwt");
 
 const config = require("../../config");
-const checkToken = expressJwt({ secret: config.secrets.JWT_SECRET });
+const checkToken = expressJwt({
+  secret: config.secrets.JWT_SECRET,
+  requestProperty: "admin"
+});
 
 module.exports = {
   signin,
@@ -15,10 +18,10 @@ module.exports = {
 };
 
 function signin(req, res, next) {
-  // req.user will be there from the middleware
-  // verify user. Then we can just create a token
+  // req.admin will be there from the middleware
+  // verifyAdmin. Then we can just create a token
   // and send it back for the client to consume
-  const token = signToken(req.user.id);
+  const token = signToken(req.admin.id);
   res.json({ token: token });
 }
 
@@ -30,30 +33,31 @@ function decodeToken() {
     // make it optional to place token on query string
     // if it is, place it on the headers where it should be
     // so checkToken can see it. See follow the 'Bearer 034930493' format
-    // so checkToken can see it and decode it
+    // so checkToken can see it and decode it;
     if (req.query && req.query.hasOwnProperty("access_token")) {
       req.headers.authorization = "Bearer " + req.query.access_token;
     }
 
-    // this will call next if token is valid
-    // and send error if its not. It will attached
-    // the decoded token to req.user
+    // this will call next if token is valid and send error if its not.
+    // It will attach the decoded token to req.admin
     checkToken(req, res, next);
   };
 }
 
-function getFreshUser() {
+function getFreshAdmin() {
   return async (req, res, next) => {
     if (config.disableAuth) {
       await AdminModel.remove();
       req.admin = await AdminModel.create({
-        adminname: "student1",
-        passwordHash: "12334eefs"
+        username: "student1",
+        passwordHash: "543212345"
       });
       return next();
     }
 
     return AdminModel.findById(req.admin.id)
+      .lean()
+      .exec()
       .then(function(admin) {
         if (!admin) {
           // if no admin is found it was not
@@ -73,7 +77,7 @@ function getFreshUser() {
   };
 }
 
-function verifyUser() {
+function verifyAdmin() {
   return (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -110,6 +114,6 @@ function verifyUser() {
 
 function signToken(id) {
   return jwt.sign({ id }, config.secrets.JWT_SECRET, {
-    expiresIn: config.expireTime
+    expiresIn: config.secrets.expireTime
   });
 }

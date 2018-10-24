@@ -18,6 +18,7 @@ module.exports = {
     url: dbURL
   },
   secrets: {
+    expireTime: process.env.EXPIRE_TIME,
     JWT_SECRET: process.env.JWT_SECRET
   }
 };

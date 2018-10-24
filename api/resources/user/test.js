@@ -2,16 +2,14 @@ const createApiSpec = require("../../../test/apiSpec");
 const UserModel = require("./model");
 const UserController = require("./controller");
 
-const chai = require("chai");
-const expect = chai.expect;
-const chaiHttp = require("chai-http");
-chai.use(chaiHttp);
-
-function additionalTests(app) {
+function additionalTests(app, jwt) {
   describe("UserController", () => {
     describe("getOne", () => {
       it("should return a user with the name maxime", async () => {
-        const result = await chai.request(app).get("/api/user/maxime");
+        const result = await chai
+          .request(app)
+          .get("/api/user/maxime")
+          .set("Authorization", `Bearer ${jwt}`);
         expect(result).to.have.status(200);
         expect(result).to.be.json;
         expect(result.body).to.be.an("object");
@@ -22,4 +20,9 @@ function additionalTests(app) {
   });
 }
 
-createApiSpec(UserModel, "user", { name: "maxime" }, { additionalTests });
+createApiSpec(
+  UserModel,
+  "user",
+  { name: "maxime" },
+  { getOne: "/api/user/maxime" }
+);
