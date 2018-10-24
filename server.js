@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
+const compression = require("compression");
 
 const dbConnect = require("./db");
 const apiRouter = require("./api");
@@ -13,6 +14,7 @@ dbConnect();
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(compression());
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
