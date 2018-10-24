@@ -29,7 +29,7 @@ if (environment !== "production") {
 
 // router
 app.use("/signin", auth.verifyAdmin, auth.signin);
-app.use("/api", auth.protect, apiRouter);
+app.use("/api", apiRouter);
 
 // catch all
 app.all("*", (req, res) => {
