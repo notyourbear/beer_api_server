@@ -2,14 +2,17 @@ require("dotenv").config();
 
 let dbURL;
 switch (process.env.NODE_ENV) {
-  case "testproduction":
+  case "development":
+    dbURL = process.env.DB_URL;
+    break;
+  case "production":
     dbURL = process.env.PROD_DB_URL;
     break;
   case "testing":
     dbURL = process.env.TEST_DB_URL;
     break;
   default:
-    dbURL = process.env.DB_URL;
+    dbURL = process.env.PROD_DB_URL;
 }
 
 let disableAuth;

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "NODE_ENV=testing npm run test:unit",
     "dev": "NODE_ENV=development nodemon index.js",
-    "test-prod": "NODE_ENV=testproduction nodemon index.js",
+    "prod": "NODE_ENV=production nodemon index.js",
     "test:unit": "mocha \"api/**/test.js\" --timeout 10000"
   },
   "author": "Patrick Racenberg",
