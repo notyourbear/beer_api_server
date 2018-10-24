@@ -22,6 +22,7 @@ function getOne(req, res, next) {
 
 function createOne(req, res, next) {
   let admin = req.body.data;
+  console.log({ admin });
   adminModel
     .create(admin)
     .then(createdAdmin => {

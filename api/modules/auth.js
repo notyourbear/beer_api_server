@@ -14,7 +14,9 @@ module.exports = {
   signToken,
   getFreshAdmin,
   verifyAdmin,
-  protect: [decodeToken(), getFreshAdmin()]
+  protect: config.disableAuth
+    ? (req, res, next) => next()
+    : [decodeToken(), getFreshAdmin()]
 };
 
 function signin(req, res, next) {
@@ -27,9 +29,6 @@ function signin(req, res, next) {
 
 function decodeToken() {
   return (req, res, next) => {
-    if (config.disableAuth) {
-      return next();
-    }
     // make it optional to place token on query string
     // if it is, place it on the headers where it should be
     // so checkToken can see it. See follow the 'Bearer 034930493' format
@@ -46,15 +45,6 @@ function decodeToken() {
 
 function getFreshAdmin() {
   return async (req, res, next) => {
-    if (config.disableAuth) {
-      await AdminModel.remove();
-      req.admin = await AdminModel.create({
-        username: "student1",
-        passwordHash: "543212345"
-      });
-      return next();
-    }
-
     return AdminModel.findById(req.admin.id)
       .lean()
       .exec()

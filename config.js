@@ -13,6 +13,7 @@ switch (process.env.NODE_ENV) {
 }
 
 module.exports = {
+  disableAuth: true,
   PORT: process.env.PORT,
   db: {
     url: dbURL
