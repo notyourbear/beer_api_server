@@ -67,39 +67,35 @@ function getFreshAdmin() {
   };
 }
 
-function verifyAdmin() {
-  return (req, res, next) => {
-    const username = req.body.username;
-    const password = req.body.password;
+function verifyAdmin(req, res, next) {
+  let { username, password } = req.body.data;
+  // if no username or password then send
+  if (!username || !password) {
+    res.status(400).send("You need a username and password");
+    return;
+  }
 
-    // if no username or password then send
-    if (!username || !password) {
-      res.status(400).send("You need a username and password");
-      return;
-    }
-
-    // look user up in the DB so we can check
-    // if the passwords match for the username
-    AdminModel.findOne({ username: username })
-      .then(function(admin) {
-        if (!admin) {
-          res.status(401).send("No admin with the given username");
+  // look user up in the DB so we can check
+  // if the passwords match for the username
+  AdminModel.findOne({ username: username })
+    .then(function(admin) {
+      if (!admin) {
+        res.status(401).send("No admin with the given username");
+      } else {
+        // checking the passowords here
+        if (!admin.authenticate(password, admin.passwordHash)) {
+          res.status(401).send("Wrong password");
         } else {
-          // checking the passowords here
-          if (!admin.authenticate(password)) {
-            res.status(401).send("Wrong password");
-          } else {
-            // if everything is good,
-            // then attach to req.admin
-            // and call next so the controller
-            // can sign a token from the req.admin._id
-            req.admin = admin;
-            next();
-          }
+          // if everything is good,
+          // then attach to req.admin
+          // and call next so the controller
+          // can sign a token from the req.admin._id
+          req.admin = admin;
+          next();
         }
-      })
-      .catch(error => next(err));
-  };
+      }
+    })
+    .catch(error => next(error));
 }
 
 function signToken(id) {

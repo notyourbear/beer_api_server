@@ -13,6 +13,7 @@ dbConnect();
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -27,7 +28,7 @@ if (environment !== "production") {
 }
 
 // router
-app.use("/signin", auth.signin);
+app.use("/signin", auth.verifyAdmin, auth.signin);
 app.use("/api", auth.protect, apiRouter);
 
 // catch all

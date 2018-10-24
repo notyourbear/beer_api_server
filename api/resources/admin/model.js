@@ -17,18 +17,17 @@ const adminSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-adminSchema.methods = {
-  authenticate(plaintTextPassword) {
-    return bcrypt.compareSync(plainTextPword, this.password);
-  },
-  hashPassword(plaintTextPassword) {
-    if (!plaintTextPassword) {
-      throw new Error("Could not save user");
-    }
+adminSchema.methods.authenticate = (plainTextPassword, hash) => {
+  return bcrypt.compareSync(plainTextPassword, hash);
+};
 
-    const salt = bcrypt.genSaltSync(10);
-    return bcrypt.hashSync(plaintTextPassword, salt);
+adminSchema.statics.hashPassword = plainTextPassword => {
+  if (!plainTextPassword) {
+    throw new Error("Could not save user");
   }
+
+  const salt = bcrypt.genSaltSync(10);
+  return bcrypt.hashSync(plainTextPassword, salt);
 };
 
 module.exports = mongoose.model("admin", adminSchema);

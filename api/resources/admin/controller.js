@@ -21,10 +21,13 @@ function getOne(req, res, next) {
 }
 
 function createOne(req, res, next) {
-  let admin = req.body.data;
-  console.log({ admin });
+  let { username, password } = req.body.data;
+  let passwordHash = adminModel.hashPassword(password);
   adminModel
-    .create(admin)
+    .create({
+      username,
+      passwordHash
+    })
     .then(createdAdmin => {
       res.status(201).json(createdAdmin);
     })

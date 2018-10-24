@@ -12,6 +12,7 @@ createApiSpec(
   "admin",
   {},
   {
-    getOne: "/api/admin/admin"
+    getOne: "/api/admin/admin",
+    post: false
   }
 );

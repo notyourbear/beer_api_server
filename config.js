@@ -12,8 +12,20 @@ switch (process.env.NODE_ENV) {
     dbURL = process.env.DB_URL;
 }
 
+let disableAuth;
+switch (true) {
+  case process.env.NODE_ENV === "testing":
+    disableAuth = true;
+    break;
+  case process.env.DISABLE_AUTH === "true":
+    disableAuth = true;
+    break;
+  default:
+    disableAuth = false;
+}
+
 module.exports = {
-  disableAuth: true,
+  disableAuth,
   PORT: process.env.PORT,
   db: {
     url: dbURL
