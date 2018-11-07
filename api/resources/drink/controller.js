@@ -45,6 +45,7 @@ function getByUser(req, res, next) {
 function createOne(req, res, next) {
   // need to make sure beer and location exist.
   let { beer, location, user } = req.body.data;
+  console.log({ beer, location, user });
   let promises = [];
 
   if (!user._id) {
@@ -53,7 +54,11 @@ function createOne(req, res, next) {
         .findOne({ name: user.name })
         .lean()
         .exec()
-        .then(foundUser => (user = foundUser))
+        .then(foundUser => {
+          return foundUser
+            ? (user = foundUser)
+            : userModel.create(user).then(created => (user = created));
+        })
     );
   }
   if (!beer._id) {
