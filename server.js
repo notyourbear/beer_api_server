@@ -21,7 +21,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, X-Custom-Header"
+    "Origin, X-Requested-With, Content-Type, Accept, X-Custom-Header, authorization"
   );
   if (req.method === "OPTIONS") {
     return res.status(200).end();
